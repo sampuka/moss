@@ -8,10 +8,10 @@ mov sp, bp
 push boot_message
 call print_string
 
-push boot_drive ; Drive to load from
+push 0x80 ; Drive to load from (0x00 for floppy, 0x80 for hdd)
 push 0x00 ; Cylinder
 push 0x00 ; Head
-push 0x02 ; Sector
+push 0x02 ; Sector (1-indexed)
 push 0x04 ; Sectors to read
 push 0x9000 ; Destination
 call disk_load
