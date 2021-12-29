@@ -2,7 +2,7 @@
 ; Expects two bytes pushed on the stack
 ; No guarantee of preserving register values
 
-print_hex2:
+bios_print_hex2:
 enter 0, 0
 
 mov bl, [bp+5]
@@ -30,24 +30,24 @@ mov byte [hex2_format_string+5], cl
 add byte [hex2_format_string+5], bl
 
 mov bx, 2
-print_hex2_fix_loop:
+bios_print_hex2_fix_loop:
 cmp byte [hex2_format_string+bx], '9'
-jg print_hex2_fix
-print_hex2_fix_end:
+jg bios_print_hex2_fix
+bios_print_hex2_fix_end:
 add bx, 1
 cmp bx, 6
-je print_hex2_end
-jmp print_hex2_fix_loop
+je bios_print_hex2_end
+jmp bios_print_hex2_fix_loop
 
-print_hex2_fix:
+bios_print_hex2_fix:
 sub byte [hex2_format_string+bx], '9'
 add byte [hex2_format_string+bx], '@'
-jmp print_hex2_fix_end
+jmp bios_print_hex2_fix_end
 
-print_hex2_end:
+bios_print_hex2_end:
 
 push hex2_format_string
-call print_string
+call bios_print_string
 
 leave
 ret 2

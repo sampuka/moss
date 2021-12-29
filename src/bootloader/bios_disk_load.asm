@@ -8,7 +8,7 @@
 ; Byte 0:1   = destination
 ; No guarantee of preserving register values
 
-disk_load:
+bios_disk_load:
 enter 0, 0
 
 mov dl, [bp+14] ; Drive
@@ -21,22 +21,22 @@ mov bx, [bp+4] ; Destination
 mov ah, 0x02 ; Prepare ISR for read sector function
 int 0x13
 
-jc disk_load_error
+jc bios_disk_load_error
 
 cmp al, [bp+6] ; Check the amount of actual read sectors
-jne disk_load_error
+jne bios_disk_load_error
 
-disk_load_end:
+bios_disk_load_end:
 
 leave
 ret 12
 
-disk_load_error:
+bios_disk_load_error:
 push word ax
-push disk_load_error_msg
-call print_string
-call print_hex1
-jmp disk_load_end
+push bios_disk_load_error_msg
+call bios_print_string
+call bios_print_hex1
+jmp bios_disk_load_end
 
-disk_load_error_msg:
+bios_disk_load_error_msg:
 db `Disk load error: `,0
