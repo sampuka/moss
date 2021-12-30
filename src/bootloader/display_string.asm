@@ -6,7 +6,7 @@ WHITE_ON_BLACK equ 0x0f
 display_string:
     enter 0, 0
     mov edx, VIDEO_MEMORY
-    mov ebx, [ebp+4]
+    mov ebx, [ebp+8]
 
     display_string_loop:
         mov al, [ebx]

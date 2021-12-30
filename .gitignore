@@ -1,1 +1,3 @@
 src/bootloader/build/
+src/kernel/build/
+src/build/

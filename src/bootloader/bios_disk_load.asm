@@ -32,10 +32,8 @@ leave
 ret 12
 
 bios_disk_load_error:
-push word ax
 push bios_disk_load_error_msg
 call bios_print_string
-call bios_print_hex1
 jmp bios_disk_load_end
 
 bios_disk_load_error_msg:
