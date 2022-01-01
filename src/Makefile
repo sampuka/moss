@@ -2,7 +2,10 @@ all:
 	mkdir -p build
 	cd bootloader && make && cd ..
 	cd kernel && make && cd ..
-	cat bootloader/build/boot_sector.bin kernel/build/kernel.bin > build/moss.img
+	cd libc && make && cd ..
+	cd drivers && make && cd ..
+	ld -m elf_i386 -o build/moss.bin -Ttext 0x1000 kernel/build/kernel.bin libc/build/libc.bin drivers/build/drivers.bin --oformat binary
+	cat bootloader/build/boot_sector.bin build/moss.bin > build/moss.img
 
 run: all
 	qemu-system-x86_64 -vga std -hda build/moss.img
@@ -12,3 +15,7 @@ debug: all
 
 clean:
 	rm -rf build
+	cd bootloader && make clean && cd ..
+	cd kernel && make clean && cd ..
+	cd libc && make clean && cd ..
+	cd drivers && make clean && cd ..

@@ -1,3 +1,5 @@
+src/build/
 src/bootloader/build/
 src/kernel/build/
-src/build/
+src/libc/build/
+src/drivers/build/
