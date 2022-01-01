@@ -13,7 +13,7 @@ Moss is an ambitious attempt to create an OS of some degree.
 
 - [x] Entered 32-bit real mode
 
-- [x] Loading and entering kernel mode
+- [x] Loading and entering kernel code
 
 - [ ] VGA text mode driver
 
