@@ -4,5 +4,33 @@ void main()
 {
     screen_clear();
 
-    screen_print_absolute("Hello moss! Hello VGA text mode driver!", 0, 0);
+    const char* splash_screen_str = "\
+################################################################################\
+#                                                                              #\
+#                                                                              #\
+#                                                                              #\
+#                                                                              #\
+#                                                                              #\
+#                                                                              #\
+#                              Welcome to Moss!                                #\
+#                                                                              #\
+#                                                                              #\
+#                                                                              #\
+#                                                                              #\
+#                                                                              #\
+#                                                                              #\
+#                                                                              #\
+#                                                                              #\
+#                                                                              #\
+#                                                                              #\
+#                                                                              #\
+#                                                                              #\
+#                                                                              #\
+#                                                                              #\
+#                                                                              #\
+#                                                                              #\
+################################################################################\
+";
+
+    screen_print_absolute(splash_screen_str, 0, 0);
 }
