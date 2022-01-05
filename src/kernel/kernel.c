@@ -1,36 +1,12 @@
+#include "libc/string.h"
 #include "drivers/screen.h"
 
 void main()
 {
     screen_clear();
+    screen_border();
 
-    const char* splash_screen_str = "\
-################################################################################\
-#                                                                              #\
-#                                                                              #\
-#                                                                              #\
-#                                                                              #\
-#                                                                              #\
-#                                                                              #\
-#                              Welcome to Moss!                                #\
-#                                                                              #\
-#                                                                              #\
-#                                                                              #\
-#                                                                              #\
-#                                                                              #\
-#                                                                              #\
-#                                                                              #\
-#                                                                              #\
-#                                                                              #\
-#                                                                              #\
-#                                                                              #\
-#                                                                              #\
-#                                                                              #\
-#                                                                              #\
-#                                                                              #\
-#                                                                              #\
-################################################################################\
-";
+    const char* welcome_message = "Welcome to Moss!";
 
-    screen_print_absolute(splash_screen_str, 0, 0);
+    screen_print_absolute((SCREEN_COLS-strlen(welcome_message))/2, 5, welcome_message);
 }
