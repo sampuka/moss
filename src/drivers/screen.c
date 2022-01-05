@@ -1,6 +1,6 @@
 #include "screen.h"
 
-#include "string.h"
+#include "libc/string.h"
 
 typedef struct
 {
