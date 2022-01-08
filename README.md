@@ -2,19 +2,25 @@
 
 Moss is an ambitious attempt to create an OS of some degree.
 
+Current implementation heavily relying on [UEFI App Bare Bones - OSDev Wiki](https://wiki.osdev.org/UEFI_App_Bare_Bones)
+
 # Dependencies
 
-(This is just a list of packages I needed to install from base Ubuntu 21.10)  
+This list is from above link. However I installed and built gnu-efi manually so I could have /lib/data.c, which doesn't seem to come with the Ubuntu package.
+It also has some instructions to install `mkgpt`.
+
 `sudo apt-get install qemu ovmf gnu-efi binutils-mingw-w64 gcc-mingw-w64 xorriso mtools`
 
 # Progress
 
-- [x] Loadable boot sector
+- [x] Decide to scrap legacy BIOS approach in favor of UEFI
 
-- [x] Entered 32-bit real mode
+- [x] UEFI loadable kernel code
 
-- [x] Loading and entering kernel code
+- [ ] Console driver on top of the UEFI protocol
 
-- [ ] VGA text mode driver
+- [ ] Graphics mode driver?
+
+- [ ] File system something?
 
 - [ ] TBD
