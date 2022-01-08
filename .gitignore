@@ -1,5 +1,3 @@
-src/build/
-src/bootloader/build/
-src/kernel/build/
-src/libc/build/
-src/drivers/build/
+src/build
+src/iso
+OVMF.fd

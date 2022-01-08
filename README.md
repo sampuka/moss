@@ -5,7 +5,7 @@ Moss is an ambitious attempt to create an OS of some degree.
 # Dependencies
 
 (This is just a list of packages I needed to install from base Ubuntu 21.10)  
-`sudo apt install build-essential nasm gcc-multilib qemu-system-x86`
+`sudo apt-get install qemu ovmf gnu-efi binutils-mingw-w64 gcc-mingw-w64 xorriso mtools`
 
 # Progress
 
