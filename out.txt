@@ -1,0 +1,1 @@
+x86_64-w64-mingw32-gcc -nostdlib -Wl,-dll -shared -Wl,--subsystem,10 -e efi_main -L../gnu-efi/x86_64/gnuefi -L../gnu-efi/x86_64/lib -o build/BOOTX64.EFI build/data.c.o build/efi_entry.c.o build/uefi_con.c.o build/kernel_main.cpp.o -lgnuefi -lefi
