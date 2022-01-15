@@ -1,7 +1,10 @@
 GNU_EFI_DIR := ../gnu-efi
 INCLUDES := -I$(GNU_EFI_DIR)/inc -I$(GNU_EFI_DIR)/inc/x86_64 -I$(GNU_EFI_DIR)/inc/protocol
-CFLAGS := -std=c11 -ffreestanding -Wall -Wextra $(INCLUDES)
 CC := x86_64-w64-mingw32-gcc
+CXX := $(CC)
+
+CFLAGS := -std=c11 -ffreestanding -Wall -Wextra $(INCLUDES)
+CXXFLAGS := -std=c++17 -ffreestanding -Wall -Wextra $(INCLUDES)
 
 BUILD_DIR := build
 SRC_DIR := src
@@ -33,6 +36,9 @@ moss.iso: $(OBJS)
 
 $(BUILD_DIR)/%.c.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/%.cpp.o: $(SRC_DIR)/%.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 run: all
 	qemu-system-x86_64 -L .. -pflash OVMF.fd -cdrom moss.iso
