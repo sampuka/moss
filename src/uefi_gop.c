@@ -4,8 +4,9 @@
 #include <efilib.h>
 
 #include "uefi_con.h"
+#include "uefi_utils.h"
 
-EFI_GUID gop_guid;
+EFI_GUID gop_guid = EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
 EFI_GRAPHICS_OUTPUT_PROTOCOL *gop = NULL;
 
 EFI_GRAPHICS_OUTPUT_MODE_INFORMATION *info = NULL;
@@ -15,33 +16,30 @@ UINTN nativeMode = 0;
 
 int uefi_gop_init()
 {
-    uefi_conout_outputstring(u".");
     EFI_STATUS Status = BS->LocateProtocol(&gop_guid, NULL, (void**)&gop);
-    uefi_conout_outputstring(u".");
 
     if (EFI_ERROR(Status))
     {
-        for (int i = 1; i < Status; i*=2)
-        {
-            uefi_conout_outputstring(u".");
-        }
+        uefi_conout_outputstring(u"GOP LocateProtocol failed with status ");
+        uefi_conout_outputstring(uefi_utils_status_string(Status));
+        uefi_conout_outputstring(u"\r\n");
         return 1;
     }
 
-    uefi_conout_outputstring(u".");
     Status = gop->QueryMode(gop, gop->Mode==NULL?0:gop->Mode->Mode, &SizeOfInfo, &info);
-    uefi_conout_outputstring(u".");
 
     // this is needed to get the current video mode
     if (Status == EFI_NOT_STARTED)
     {
-        uefi_conout_outputstring(u".");
+        uefi_conout_outputstring(u"QueryMode returned EFI_NOT_STARTED so setting mode 0\r\n");
         Status = gop->SetMode(gop, 0);
-        uefi_conout_outputstring(u".");
     }
 
     if(EFI_ERROR(Status))
     {
+        uefi_conout_outputstring(u"GOP QueryMode or SetMode failed with status ");
+        uefi_conout_outputstring(uefi_utils_status_string(Status));
+        uefi_conout_outputstring(u"\r\n");
         return 1;
     }
     else

@@ -19,36 +19,28 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable)
     uefi_conout_outputstring(u"Hello Moss!\r\n");
 
     // Initialize GOP
-    uefi_conout_outputstring(u"Initializing GOP... ");
+    uefi_conout_outputstring(u"Initializing GOP...\r\n");
 
     int gop_status = uefi_gop_init();
 
     if (gop_status)
     {
-        uefi_conout_outputstring(u"failed\r\n");
+        uefi_conout_outputstring(u"GOP init failed\r\n");
     }
     else
     {
-        uefi_conout_outputstring(u"succes\r\n");
+        uefi_conout_outputstring(u"GOP init succeeded\r\n");
     }
+
+    int main_status = kernel_main();
 
     // Flush keystroke buffer
     uefi_conin_reset();
 
     // Wait for keystroke
     uint16_t c = 0;
-    while (uefi_conin_readkeystroke(&c) || 1)
+    while (uefi_conin_readkeystroke(&c))
         ;
-
-    /*
-    // Locate GOP
-    EFI_GUID gop_guid = EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID;
-    EFI_GRAPHICS_OUTPUT_PROTOCOL *gop;
-
-    EFI_STATUS gop_status = BS->LocateProtocol(&gop_guid, NULL, (void**)&gop);
-    */
-
-    int main_status = kernel_main();
 
     if (main_status == 0)
     {

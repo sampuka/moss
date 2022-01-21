@@ -1,9 +1,9 @@
-#CC := gcc
-#CXX := g++
-#LD := ld
-CC := x86_64-w64-mingw32-gcc
-CXX := x86_64-w64-mingw32-g++
-LD := x86_64-w64-mingw32-ld
+CC := gcc
+CXX := g++
+LD := ld
+#CC := x86_64-w64-mingw32-gcc
+#CXX := x86_64-w64-mingw32-g++
+#LD := x86_64-w64-mingw32-ld
 
 OVMF_DIR := .
 
@@ -14,8 +14,8 @@ COMMONFLAGS := -ffreestanding -fpic -fno-stack-protector -fno-stack-check -fshor
 CFLAGS := -std=c11 $(COMMONFLAGS)
 CXXFLAGS := -std=c++17 $(COMMONFLAGS)
 LDFLAGS := -nostdlib -Wl,-dll -shared -Wl,--subsystem,10 -e efi_main
-#LIBS := -L/usr/lib -lgnuefi -lefi
-LIBS := -L$(GNU_EFI_DIR)/x86_64/gnuefi -L$(GNU_EFI_DIR)/x86_64/lib -lefi
+LIBS := -L/usr/lib -lgnuefi -lefi
+#LIBS := -L$(GNU_EFI_DIR)/x86_64/gnuefi -L$(GNU_EFI_DIR)/x86_64/lib -lgnuefi -lefi
 #LIBS :=
 
 BUILD_DIR := build
@@ -48,8 +48,8 @@ moss.iso: $(BUILD_DIR)/BOOTX64.EFI
 	xorriso -as mkisofs -R -f -e fat.img -no-emul-boot -o moss.iso iso
 
 $(BUILD_DIR)/BOOTX64.EFI: $(OBJS)
-	#$(CC) -shared -Bsymbolic -T$(GNU_EFI_DIR)/gnuefi/elf_x86_64_efi.lds /usr/lib/crt0-efi-x86_64.o -o $(BUILD_DIR)/BOOTX64.EFI $(OBJS) $(LIBS)
-	$(CC) $(LDFLAGS) -o $(BUILD_DIR)/BOOTX64.EFI $(OBJS) $(LIBS)
+	$(LD) -nostdlib -T ../gnu-efi/gnuefi/elf_x86_64_efi.lds -shared -Bsymbolic ../gnu-efi/x86_64/gnuefi/crt0-efi-x86_64.o -L/usr/lib -o $(BUILD_DIR)/moss.so $(OBJS) -lefi -lgnuefi /usr/lib/gcc/x86_64-linux-gnu/11/libgcc.a
+	objcopy -j .text -j .sdata -j .data -j .dynamic -j .dynsym  -j .rel -j .rela -j .rel.* -j .rela.* -j .reloc --target efi-app-x86_64 --subsystem=10 $(BUILD_DIR)/moss.so $(BUILD_DIR)/BOOTX64.EFI
 
 $(BUILD_DIR)/%.c.o: $(SRC_DIR)/%.c
 	mkdir -p $(BUILD_DIR)
