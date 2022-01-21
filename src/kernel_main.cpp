@@ -1,6 +1,6 @@
 #include "uefi_con.h"
 
-//extern "C" {
+extern "C" {
 
 int kernel_main()
 {
@@ -8,4 +8,4 @@ int kernel_main()
     return 0;
 }
 
-//} // extern "C"
+} // extern "C"

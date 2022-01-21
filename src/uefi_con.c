@@ -3,13 +3,16 @@
 #include <efi.h>
 #include <efilib.h>
 
-int uefi_conout_outputstring(uint16_t* str)
+#pragma GCC diagnostic push  // require GCC 4.6
+#pragma GCC diagnostic ignored "-Wdiscarded-qualifiers"
+int uefi_conout_outputstring(const char16_t* str)
 {
     EFI_STATUS Status = ST->ConOut->OutputString(ST->ConOut, str);
     //EFI_STATUS Status = uefi_call_wrapper(ST->ConOut->OutputString, 1, str);
 
     return Status != EFI_SUCCESS;
 }
+#pragma GCC diagnostic pop
 
 int uefi_conin_reset()
 {

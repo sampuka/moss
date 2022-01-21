@@ -24,13 +24,12 @@ SRC_DIR := src
 CSOURCES := \
     data.c \
     efi_entry.c \
-    kernel_main.c \
     uefi_con.c \
     uefi_gop.c \
     uefi_utils.c
 
-CXXSOURCES :=
-#    kernel_main.cpp
+CXXSOURCES := \
+    kernel_main.cpp
 
 OBJS=$(CSOURCES:%.c=$(BUILD_DIR)/%.c.o) $(CXXSOURCES:%.cpp=$(BUILD_DIR)/%.cpp.o)
 
