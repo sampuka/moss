@@ -11,7 +11,7 @@ BUILD_DIR := build
 SRC_DIR := src
 
 GNU_EFI_DIR := ../gnu-efi
-INCLUDES := -I$(GNU_EFI_DIR)/inc -I$(GNU_EFI_DIR)/inc/x86_64 -I$(GNU_EFI_DIR)/inc/protocol -I$(SRC_DIR)/uefi -I$(SRC_DIR)/kernel -I$(SRC_DIR)/libc
+INCLUDES := -I$(GNU_EFI_DIR)/inc -I$(GNU_EFI_DIR)/inc/x86_64 -I$(GNU_EFI_DIR)/inc/protocol -I$(SRC_DIR)/uefi -I$(SRC_DIR)/kernel -I$(SRC_DIR)/libc -I$(SRC_DIR)/drivers
 
 COMMONFLAGS := -ffreestanding -fpic -fno-stack-protector -fno-stack-check -fshort-wchar -maccumulate-outgoing-args -mno-red-zone -Wall -Wextra $(INCLUDES)
 CFLAGS := -std=c11 $(COMMONFLAGS)
@@ -26,7 +26,8 @@ CSOURCES := \
     uefi/efi_entry.c \
     uefi/uefi_con.c \
     uefi/uefi_gop.c \
-    uefi/uefi_utils.c
+    uefi/uefi_utils.c \
+    drivers/screen.c
 
 CXXSOURCES := \
     kernel/kernel_main.cpp
