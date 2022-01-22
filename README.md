@@ -17,10 +17,16 @@ It also has some instructions to install `mkgpt`.
 
 - [x] UEFI loadable kernel code
 
-- [ ] Console driver on top of the UEFI protocol
+- [ ] Graphics mode driver
 
-- [ ] Graphics mode driver?
+- [ ] Fancy splash screen
 
-- [ ] File system something?
+- [ ] Keyboard driver
+
+- [ ] The most basic terminal environment imaginable
+
+- [ ] Pong!
+
+- [ ] 
 
 - [ ] TBD
