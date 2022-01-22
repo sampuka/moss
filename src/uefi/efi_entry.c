@@ -34,6 +34,8 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable)
 
     int main_status = kernel_main();
 
+    uefi_conout_outputstring(u"UEFI program ended. Press any key to return to shell...\r\n");
+
     // Flush keystroke buffer
     uefi_conin_reset();
 
