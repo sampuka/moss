@@ -47,7 +47,7 @@ int uefi_conout_outputstring_uint_dec(size_t n)
 
     fbuf[o] = u'\0';
 
-    uefi_conout_outputstring(fbuf);
+    return uefi_conout_outputstring(fbuf);
 }
 
 int uefi_conin_reset()
