@@ -4,7 +4,7 @@
 #include <efi.h>
 #include <efilib.h>
 
-#define GOP_MAX_MODES_SUPPORTED 50
+#define GOP_MAX_MODES_SUPPORTED 100
 
 typedef struct
 {
@@ -13,9 +13,18 @@ typedef struct
 } GOPModeInfo;
 
 extern GOPModeInfo GOP_modes[GOP_MAX_MODES_SUPPORTED];
-
 extern UINTN GOP_mode_count;
+extern UINTN GOP_active_mode;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 int uefi_gop_init();
+int uefi_gop_setmode(UINTN mode);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
