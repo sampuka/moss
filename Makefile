@@ -31,7 +31,8 @@ CSOURCES := \
 CXXSOURCES := \
     kernel/kernel_main.cpp
 
-OBJS=$(CSOURCES:%.c=$(BUILD_DIR)/%.c.o) $(CXXSOURCES:%.cpp=$(BUILD_DIR)/%.cpp.o)
+OBJ = $(CSOURCES:%.c=$(BUILD_DIR)/%.c.o) $(CXXSOURCES:%.cpp=$(BUILD_DIR)/%.cpp.o)
+DEP = $(OBJ:%.o=%.d)
 
 .PHONY: all run clean
 
@@ -47,17 +48,19 @@ moss.iso: $(BUILD_DIR)/BOOTX64.EFI
 	cp $(BUILD_DIR)/fat.img iso
 	xorriso -as mkisofs -R -f -e fat.img -no-emul-boot -o moss.iso iso
 
-$(BUILD_DIR)/BOOTX64.EFI: $(OBJS)
+$(BUILD_DIR)/BOOTX64.EFI: $(OBJ)
 	#$(CC) -shared -Bsymbolic -T$(GNU_EFI_DIR)/gnuefi/elf_x86_64_efi.lds /usr/lib/crt0-efi-x86_64.o -o $(BUILD_DIR)/BOOTX64.EFI $(OBJS) $(LIBS)
-	$(CC) $(LDFLAGS) -o $(BUILD_DIR)/BOOTX64.EFI $(OBJS) $(LIBS)
+	$(CC) $(LDFLAGS) -o $(BUILD_DIR)/BOOTX64.EFI $(OBJ) $(LIBS)
+
+-include $(DEP)
 
 $(BUILD_DIR)/%.c.o: $(SRC_DIR)/%.c
 	mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -MMD -c $< -o $@
 
 $(BUILD_DIR)/%.cpp.o: $(SRC_DIR)/%.cpp
 	mkdir -p $(@D)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -MMD -c $< -o $@
 
 run: all
 	qemu-system-x86_64 -L .. -pflash $(OVMF_DIR)/OVMF.fd -cdrom moss.iso
