@@ -14,6 +14,42 @@ int uefi_conout_outputstring(const char16_t* str)
 }
 #pragma GCC diagnostic pop
 
+int uefi_conout_outputstring_uint_dec(size_t n)
+{
+    char16_t fbuf[] = u"00000000000000000000";
+    size_t mask =       10000000000000000000ULL;
+
+    size_t i = 0;
+    for (;i < 20; i++)
+    {
+        size_t d = (n / mask) % 10;
+        if (d > 0)
+        {
+            break;
+        }
+        mask /= 10;
+    }
+
+    size_t o = 0;
+
+    for (; i < 20; i++)
+    {
+        size_t d = (n / mask) % 10;
+        if (d > 0)
+        {
+            fbuf[o] += d;
+        }
+
+        o++;
+
+        mask /= 10;
+    }
+
+    fbuf[o] = u'\0';
+
+    uefi_conout_outputstring(fbuf);
+}
+
 int uefi_conin_reset()
 {
     EFI_STATUS Status = ST->ConIn->Reset(ST->ConIn, FALSE);

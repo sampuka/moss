@@ -11,41 +11,85 @@ EFI_GRAPHICS_OUTPUT_PROTOCOL *gop = NULL;
 
 EFI_GRAPHICS_OUTPUT_MODE_INFORMATION *info = NULL;
 UINTN SizeOfInfo = 0;
-UINTN numModes = 0;
-UINTN nativeMode = 0;
+UINTN mode_count = 0;
+UINTN native_mode = 0;
+
+GOPModeInfo GOP_modes[GOP_MAX_MODES_SUPPORTED] = {{.SizeOfInfo = 0, .info = NULL}};
+UINTN GOP_mode_count = 0;
 
 int uefi_gop_init()
 {
-    EFI_STATUS Status = BS->LocateProtocol(&gop_guid, NULL, (void**)&gop);
+    EFI_STATUS LocateProtocolStatus = BS->LocateProtocol(&gop_guid, NULL, (void**)&gop);
 
-    if (EFI_ERROR(Status))
+    switch (LocateProtocolStatus)
     {
-        uefi_conout_outputstring(u"GOP LocateProtocol failed with status ");
-        uefi_conout_outputstring(uefi_utils_status_string(Status));
-        uefi_conout_outputstring(u"\r\n");
+        case EFI_SUCCESS:
+            uefi_conout_outputstring(u"  - Locating protocol succeeded\r\n");
+            break;
+
+        case EFI_INVALID_PARAMETER:
+            uefi_conout_outputstring(u"  - Locating protocol failed with status: EFI_INVALID_PARAMETER\r\n");
+            return 1;
+            break;
+
+        case EFI_NOT_FOUND:
+            uefi_conout_outputstring(u"  - Locating protocol failed with status: EFI_NOT_FOUND\r\n");
+            return 1;
+            break;
+
+        default:
+            uefi_conout_outputstring(u"  - Locating protocol failed with unexpected status\r\n");
+            return 1;
+            break;
+    }
+
+    if (gop->Mode == NULL)
+    {
+        uefi_conout_outputstring(u"  - GOP Mode struct is NULL?\r\n");
         return 1;
     }
 
-    Status = gop->QueryMode(gop, gop->Mode==NULL?0:gop->Mode->Mode, &SizeOfInfo, &info);
+    uefi_conout_outputstring(u"  - Available modes: ");
+    uefi_conout_outputstring_uint_dec(gop->Mode->MaxMode);
+    uefi_conout_outputstring(u"\r\n");
 
-    // this is needed to get the current video mode
-    if (Status == EFI_NOT_STARTED)
+    GOP_mode_count = gop->Mode->MaxMode;
+    if (GOP_mode_count > GOP_MAX_MODES_SUPPORTED)
     {
-        uefi_conout_outputstring(u"QueryMode returned EFI_NOT_STARTED so setting mode 0\r\n");
-        Status = gop->SetMode(gop, 0);
+        GOP_mode_count = GOP_MAX_MODES_SUPPORTED;
     }
 
-    if(EFI_ERROR(Status))
+    for (size_t mode = 0; mode < GOP_mode_count; mode++)
     {
-        uefi_conout_outputstring(u"GOP QueryMode or SetMode failed with status ");
-        uefi_conout_outputstring(uefi_utils_status_string(Status));
-        uefi_conout_outputstring(u"\r\n");
-        return 1;
-    }
-    else
-    {
-        nativeMode = gop->Mode->Mode;
-        numModes = gop->Mode->MaxMode;
+        GOPModeInfo *GOP_mode = &(GOP_modes[mode]);
+        EFI_STATUS QueryModeStatus = gop->QueryMode(gop, mode, &(GOP_modes->SizeOfInfo), &(GOP_mode->info));
+
+        switch (QueryModeStatus)
+        {
+            case EFI_SUCCESS:
+                {
+                uefi_conout_outputstring(u"  - Mode ");
+                uefi_conout_outputstring_uint_dec(mode+1);
+                uefi_conout_outputstring(u": ");
+                uefi_conout_outputstring_uint_dec(GOP_mode->info->HorizontalResolution);
+                uefi_conout_outputstring(u"x");
+                uefi_conout_outputstring_uint_dec(GOP_mode->info->VerticalResolution);
+                uefi_conout_outputstring(u"\r\n");
+                break;
+                }
+
+            case EFI_DEVICE_ERROR:
+                uefi_conout_outputstring(u"  - Querying mode failed with status: EFI_DEVICE_ERROR\r\n");
+                break;
+
+            case EFI_INVALID_PARAMETER:
+                uefi_conout_outputstring(u"  - Querying mode failed with status: EFI_INVALID_PARAMETER\r\n");
+                break;
+
+            default:
+                uefi_conout_outputstring(u"  - Querying mode failed with unexpected status\r\n");
+                break;
+        }
     }
 
     return 0;
