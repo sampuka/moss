@@ -12,6 +12,7 @@ typedef struct
     EFI_GRAPHICS_OUTPUT_MODE_INFORMATION *info;
 } GOPModeInfo;
 
+extern EFI_GRAPHICS_OUTPUT_PROTOCOL *gop;
 extern GOPModeInfo GOP_modes[GOP_MAX_MODES_SUPPORTED];
 extern UINTN GOP_mode_count;
 extern UINTN GOP_active_mode;
