@@ -27,8 +27,12 @@ int screen_init();
 VideoMode screen_get_mode();
 void screen_get_modes(VideoMode** modes, size_t* count);
 int screen_set_resolution(size_t desired_hoz_res, size_t desired_ver_res);
-void screen_set_pixel(size_t x, size_t y, pixel_t p);
 
+void screen_clear_frame();
+void screen_swap_back_frames();
+void screen_draw_frame();
+
+void screen_set_pixel(size_t x, size_t y, pixel_t p);
 #ifdef __cplusplus
 }
 #endif
