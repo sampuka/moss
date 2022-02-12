@@ -1,6 +1,11 @@
 #include "screen.h"
 
 #include "uefi_gop.h"
+#include "bitmap_font.h"
+
+#define BACK_FRAME_HOZ 1920
+#define BACK_FRAME_VER 1080
+#define BACK_FRAME_SIZE BACK_FRAME_HOZ*BACK_FRAME_VER
 
 VideoMode video_modes[GOP_MAX_MODES_SUPPORTED] = {{0, 0, 0}};
 VideoMode active_mode = {0, 0, 0};
@@ -8,14 +13,13 @@ VideoMode active_mode = {0, 0, 0};
 uint32_t* front_frame_base = NULL;
 size_t frame_size = 0;
 
-#define BACK_FRAME_HOZ 1920
-#define BACK_FRAME_VER 1080
-#define BACK_FRAME_SIZE BACK_FRAME_HOZ*BACK_FRAME_VER
-
 pixel_t back_frame1_base[BACK_FRAME_SIZE];
 pixel_t back_frame2_base[BACK_FRAME_SIZE];
 pixel_t* draw_back_frame = &back_frame1_base[0];
 pixel_t* idle_back_frame = &back_frame2_base[0];
+
+pixel_t fground_color;
+pixel_t bground_color;
 
 int screen_init()
 {
@@ -36,6 +40,9 @@ int screen_init()
     active_mode = video_modes[GOP_active_mode];
     front_frame_base = (uint32_t*) gop->Mode->FrameBufferBase;
     frame_size = gop->Mode->FrameBufferSize;
+
+    fground_color = (pixel_t){255, 255, 255, 0};
+    bground_color = (pixel_t){  0,   0,   0, 0};
 
     return 0;
 }
@@ -117,4 +124,37 @@ void screen_set_pixel(size_t x, size_t y, pixel_t p)
     }
 
     draw_back_frame[y * BACK_FRAME_HOZ + x] = p;
+}
+
+void screen_render_char(size_t x, size_t y, const char ch)
+{
+    if (ch < 0 || ch > bitmap_table_size)
+    {
+        return;
+    }
+
+    const unsigned char* bm_ch = bitmap_font[(unsigned char)ch - bitmap_ascii_offset];
+
+    for (size_t i = 0; i < 13; i++)
+    {
+        for (size_t j = 0; j < 8; j++)
+        {
+            if (bm_ch[12-i] & (1<<(7-j)))
+            {
+                screen_set_pixel(x+j, y+i, fground_color);
+            }
+            else
+            {
+                screen_set_pixel(x+j, y+i, bground_color);
+            }
+        }
+    }
+}
+
+void screen_render_text(size_t x, size_t y, const char* text)
+{
+    for (size_t i = 0; text[i] != '\0'; i++)
+    {
+        screen_render_char(x+i*9, y, text[i]);
+    }
 }

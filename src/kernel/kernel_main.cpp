@@ -34,6 +34,9 @@ int kernel_main()
                 }
             }
         }
+
+        screen_render_text(10, 10, "Hello :)");
+
         screen_draw_frame();
 
         if (x == 0)

@@ -33,6 +33,10 @@ void screen_swap_back_frames();
 void screen_draw_frame();
 
 void screen_set_pixel(size_t x, size_t y, pixel_t p);
+
+void screen_render_char(size_t x, size_t y, const char ch);
+void screen_render_text(size_t x, size_t y, const char* text);
+
 #ifdef __cplusplus
 }
 #endif
