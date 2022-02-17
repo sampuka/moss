@@ -1,8 +1,8 @@
+#include "kernel_main.h"
+
 #include "uefi_con.h"
 
 #include "screen.h"
-
-extern "C" {
 
 int kernel_main()
 {
@@ -61,5 +61,3 @@ int kernel_main()
     }
     return 0;
 }
-
-} // extern "C"
