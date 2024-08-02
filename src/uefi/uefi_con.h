@@ -1,12 +1,12 @@
 #ifndef UEFI_CON
 #define UEFI_CON
 
-#include <stdint.h>
-#include <uchar.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#include <stdint.h>
+#include <uchar.h>
 
 int uefi_conout_outputstring(const char16_t* str);
 int uefi_conout_outputstring_uint_dec(size_t n);

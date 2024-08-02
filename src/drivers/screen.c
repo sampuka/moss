@@ -1,6 +1,6 @@
 #include "screen.h"
 
-#include "uefi_gop.h"
+#include "uefi/uefi_gop.h"
 #include "bitmap_font.h"
 
 #define BACK_FRAME_HOZ 1920

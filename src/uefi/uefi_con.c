@@ -19,6 +19,11 @@ int uefi_conout_outputstring_uint_dec(size_t n)
     char16_t fbuf[] = u"00000000000000000000";
     size_t mask =       10000000000000000000ULL;
 
+    if (n == 0)
+    {
+        return uefi_conout_outputstring(u"0");
+    }
+
     size_t i = 0;
     for (;i < 20; i++)
     {

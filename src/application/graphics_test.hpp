@@ -1,0 +1,6 @@
+#ifndef APPLICATION_GRAPHICS_TEST
+#define APPLICATION_GRAPHICS_TEST
+
+void graphics_test();
+
+#endif // APPLICATION_GRAPHICS_TEST

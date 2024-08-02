@@ -1,10 +1,10 @@
 #include <efi.h>
 #include <efilib.h>
 
-#include "uefi_con.h"
-#include "uefi_gop.h"
+#include "uefi/uefi_con.h"
+#include "uefi/uefi_gop.h"
 
-#include "kernel_main.h"
+#include "kernel/kernel_main.h"
 
 EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable)
 {
@@ -32,6 +32,18 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable)
         uefi_conout_outputstring(u"GOP init succeeded\r\n");
     }
 
+    uefi_conout_outputstring(u"Init finished. Press any key to continue...\r\n");
+
+    // Flush keystroke buffer
+    uefi_conin_reset();
+
+    // Wait for keystroke
+    uint16_t c = 0;
+    while (uefi_conin_readkeystroke(&c))
+    {
+        ;
+    }
+
     int main_status = kernel_main();
 
     uefi_conout_outputstring(u"UEFI program ended. Press any key to return to shell...\r\n");
@@ -40,9 +52,11 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable)
     uefi_conin_reset();
 
     // Wait for keystroke
-    uint16_t c = 0;
+    c = 0;
     while (uefi_conin_readkeystroke(&c))
+    {
         ;
+    }
 
     if (main_status == 0)
     {

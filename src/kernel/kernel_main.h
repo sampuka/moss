@@ -1,12 +1,14 @@
-#ifndef KERNEL_MAIN
-#define KERNEL_MAIN
+#ifndef KERNEL_KERNEL_MAIN
+#define KERNEL_KERNEL_MAIN
 
 #ifdef __cplusplus
 extern "C" {
-int kernel_main();
-}
-#else
-int kernel_main();
 #endif
 
+int kernel_main();
+
+#ifdef __cplusplus
+}
 #endif
+
+#endif // KERNEL_KERNEL_MAIN

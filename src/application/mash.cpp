@@ -1,6 +1,6 @@
 #include "mash.hpp"
 
-#include "screen.h"
+#include "drivers/screen.h"
 
 #define MASH_BUFFER_SIZE 10000
 #define MASH_INPUT_BUFFER_SIZE 200
