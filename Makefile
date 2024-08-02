@@ -10,7 +10,7 @@ OVMF_DIR := .
 BUILD_DIR := build
 SRC_DIR := src
 
-GNU_EFI_DIR := ../gnu-efi
+GNU_EFI_DIR := $(SRC_DIR)/lib/gnu-efi
 INCLUDES := -I$(GNU_EFI_DIR)/inc -I$(GNU_EFI_DIR)/inc/x86_64 -I$(GNU_EFI_DIR)/inc/protocol -I$(SRC_DIR)/uefi -I$(SRC_DIR)/kernel -I$(SRC_DIR)/libc -I$(SRC_DIR)/drivers
 
 COMMONFLAGS := -ffreestanding -fpic -fno-stack-protector -fno-stack-check -fshort-wchar -maccumulate-outgoing-args -mno-red-zone -Wall -Wextra $(INCLUDES)
