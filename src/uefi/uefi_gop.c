@@ -1,8 +1,5 @@
 #include "uefi_gop.h"
 
-#include <efi.h>
-#include <efilib.h>
-
 #include "uefi_con.h"
 #include "uefi_utils.h"
 

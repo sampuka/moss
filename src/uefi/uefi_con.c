@@ -1,7 +1,7 @@
 #include "uefi_con.h"
 
-#include <efi.h>
-#include <efilib.h>
+#include <efi/efi.h>
+#include <efi/efilib.h>
 
 #pragma GCC diagnostic push  // require GCC 4.6
 #pragma GCC diagnostic ignored "-Wdiscarded-qualifiers"

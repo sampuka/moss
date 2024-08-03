@@ -1,9 +1,16 @@
 #ifndef UEFI_UTILS
 #define UEFI_UTILS
 
-#include <efi.h>
-#include <efilib.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include <efi/efi.h>
 
 uint16_t* uefi_utils_status_string(EFI_STATUS status);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

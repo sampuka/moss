@@ -1,6 +1,10 @@
 #ifndef DRIVER_SCREEN
 #define DRIVER_SCREEN
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "stddef.h"
 #include "stdint.h"
 
@@ -17,11 +21,7 @@ typedef struct
     uint8_t g;
     uint8_t b;
     uint8_t a; // Reserved, unused
-} pixel_t;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+} __attribute__((packed)) pixel_t;
 
 int screen_init();
 VideoMode screen_get_mode();

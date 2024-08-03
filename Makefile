@@ -10,8 +10,7 @@ OVMF_DIR := .
 BUILD_DIR := build
 SRC_DIR := src
 
-GNU_EFI_DIR := $(SRC_DIR)/lib/gnu-efi
-INCLUDES := -I$(GNU_EFI_DIR)/inc -I$(GNU_EFI_DIR)/inc/x86_64 -I$(GNU_EFI_DIR)/inc/protocol -I$(SRC_DIR) -I$(SRC_DIR)/libc
+INCLUDES := -I/usr/include/ -I$(SRC_DIR) 
 
 COMMONFLAGS := -ffreestanding -fpic -fno-stack-protector -fno-stack-check -fshort-wchar -maccumulate-outgoing-args -mno-red-zone -Wall -Wextra $(INCLUDES)
 CFLAGS := -std=c11 -O2 $(COMMONFLAGS)
@@ -22,7 +21,6 @@ LDFLAGS := -nostdlib -Wl,-dll -shared -Wl,--subsystem,10 -e efi_main
 #LIBS :=
 
 CSOURCES := \
-    uefi/data.c \
     uefi/efi_entry.c \
     uefi/uefi_con.c \
     uefi/uefi_gop.c \

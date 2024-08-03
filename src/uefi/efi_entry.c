@@ -1,18 +1,40 @@
-#include <efi.h>
-#include <efilib.h>
+#include <efi/efi.h>
+#include <efi/efilib.h>
 
 #include "uefi/uefi_con.h"
 #include "uefi/uefi_gop.h"
 
 #include "kernel/kernel_main.h"
 
+// Pointer to the EFI system table
+EFI_SYSTEM_TABLE *ST;
+
+// Pointer to the boot services table
+EFI_BOOT_SERVICES *BS;
+
+// Pointer to the runtime services table
+EFI_RUNTIME_SERVICES *RT;
+
+void wait_for_keystroke()
+{
+    // Flush keystroke buffer
+    uefi_conin_reset();
+
+    uint16_t c = 0;
+    while (uefi_conin_readkeystroke(&c))
+    {
+        ;
+    }
+}
+
 EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable)
 {
     // Store the system table for future use in other functions
     ST = SystemTable;
     BS = SystemTable->BootServices;
-    //RT = SystemTable->RuntimeServices;
+    RT = SystemTable->RuntimeServices;
 
+    // I suppose this isn't needed if I only use gnu-efi for the headers
     //InitializeLib(ImageHandle, SystemTable);
 
     // Say hi
@@ -34,29 +56,13 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable)
 
     uefi_conout_outputstring(u"Init finished. Press any key to continue...\r\n");
 
-    // Flush keystroke buffer
-    uefi_conin_reset();
-
-    // Wait for keystroke
-    uint16_t c = 0;
-    while (uefi_conin_readkeystroke(&c))
-    {
-        ;
-    }
+    wait_for_keystroke();
 
     int main_status = kernel_main();
 
     uefi_conout_outputstring(u"UEFI program ended. Press any key to return to shell...\r\n");
 
-    // Flush keystroke buffer
-    uefi_conin_reset();
-
-    // Wait for keystroke
-    c = 0;
-    while (uefi_conin_readkeystroke(&c))
-    {
-        ;
-    }
+    wait_for_keystroke();
 
     if (main_status == 0)
     {
