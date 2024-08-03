@@ -7,7 +7,7 @@ Current implementation heavily relying on [UEFI App Bare Bones - OSDev Wiki](htt
 # Dependencies
 
 Setup is based on the osdev.org article.  
-`sudo apt install qemu ovmf gnu-efi gcc-mingw-w64 xorriso mtools`
+`sudo apt install qemu ovmf gnu-efi binutils-mingw-w64 gcc-mingw-w64 xorriso mtools`
 
 After installing omvf, you need to copy this file to the repository  
 `cp /usr/share/ovmf/OVMF.fd .`

@@ -12,13 +12,13 @@ SRC_DIR := src
 
 INCLUDES := -I/usr/include/ -I$(SRC_DIR) 
 
-COMMONFLAGS := -ffreestanding -fpic -fno-stack-protector -fno-stack-check -fshort-wchar -maccumulate-outgoing-args -mno-red-zone -Wall -Wextra $(INCLUDES)
-CFLAGS := -std=c11 -O2 $(COMMONFLAGS)
-CXXFLAGS := -std=c++17 -O3 $(COMMONFLAGS)
-LDFLAGS := -nostdlib -Wl,-dll -shared -Wl,--subsystem,10 -e efi_main
+COMMONFLAGS := -ffreestanding -fpic -fno-stack-protector -fno-stack-check -fshort-wchar -maccumulate-outgoing-args -mno-red-zone
+CFLAGS := $(COMMONFLAGS) $(INCLUDES) -std=c11 -O2 -Wall -Wextra
+CXXFLAGS := $(COMMONFLAGS) $(INCLUDES) -std=c++17 -O3 -Wall -Wextra -fno-exceptions -fno-rtti
+LDFLAGS := -mno-red-zone -Wl,-dll -shared -Wl,--subsystem,10 -e efi_main -nostdlib
 #LIBS := -L/usr/lib -lgnuefi -lefi
 #LIBS := -L$(GNU_EFI_DIR)/x86_64/gnuefi -L$(GNU_EFI_DIR)/x86_64/lib -lefi
-#LIBS :=
+LIBS := #-lgcc
 
 CSOURCES := \
     uefi/efi_entry.c \
@@ -50,7 +50,7 @@ moss.iso: $(BUILD_DIR)/BOOTX64.EFI
 
 $(BUILD_DIR)/BOOTX64.EFI: $(OBJ)
 	#$(CC) -shared -Bsymbolic -T$(GNU_EFI_DIR)/gnuefi/elf_x86_64_efi.lds /usr/lib/crt0-efi-x86_64.o -o $(BUILD_DIR)/BOOTX64.EFI $(OBJS) $(LIBS)
-	$(CC) $(LDFLAGS) -o $(BUILD_DIR)/BOOTX64.EFI $(OBJ) $(LIBS)
+	$(CC) $(LDFLAGS) $(COMMONFLAGS) -o $(BUILD_DIR)/BOOTX64.EFI $(OBJ) $(LIBS)
 
 -include $(DEP)
 
