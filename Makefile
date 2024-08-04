@@ -72,14 +72,15 @@ DEP = $(OBJ:%.o=%.d)
 all: moss.iso
 
 moss.iso: $(BUILD_DIR)/BOOTX64.EFI
-	dd if=/dev/zero of=$(BUILD_DIR)/fat.img bs=1k count=1440
-	mformat -i $(BUILD_DIR)/fat.img -f 1440 ::
+	dd if=/dev/zero of=$(BUILD_DIR)/fat.img bs=1k count=1440 seek=33000 # A bootable FAT32 often needs to be at least 32 MiB, so we seek here to increase size
+	mformat -i $(BUILD_DIR)/fat.img -F -f 1440 :: # -F to mark FAT32
 	mmd -i $(BUILD_DIR)/fat.img ::/EFI
 	mmd -i $(BUILD_DIR)/fat.img ::/EFI/BOOT
 	mcopy -i $(BUILD_DIR)/fat.img $(BUILD_DIR)/BOOTX64.EFI ::/EFI/BOOT
 	mkdir -p iso
 	cp $(BUILD_DIR)/fat.img iso
 	xorriso -as mkisofs -R -f -e fat.img -no-emul-boot -o moss.iso iso
+	cp $(BUILD_DIR)/fat.img moss.img
 
 $(BUILD_DIR)/pdclib/configured_include/include/_PDCLIB_config.h:
 	mkdir -p build/pdclib
