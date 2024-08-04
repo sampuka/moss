@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#include <efi/efi.h>
+#include <efi.h>
 
 uint16_t* uefi_utils_status_string(EFI_STATUS status);
 

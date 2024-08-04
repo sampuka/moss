@@ -10,22 +10,29 @@ extern "C" {
 
 typedef struct
 {
-    size_t hoz_res;
-    size_t ver_res;
-    size_t pixels_per_scanline;
-} VideoMode;
-
-typedef struct
-{
     uint8_t r;
     uint8_t g;
     uint8_t b;
     uint8_t a; // Reserved, unused
 } __attribute__((packed)) pixel_t;
 
+typedef struct
+{
+    int hoz_res;
+    int ver_res;
+    int pixels_per_scanline;
+} VideoMode;
+
+typedef struct
+{
+    VideoMode* video_modes;
+    int video_mode_size;
+    int active_mode;
+} VideoModeSet;
+
 int screen_init();
 VideoMode screen_get_mode();
-void screen_get_modes(VideoMode** modes, size_t* count);
+VideoModeSet screen_video_modes();
 int screen_set_resolution(size_t desired_hoz_res, size_t desired_ver_res);
 
 void screen_clear_frame();

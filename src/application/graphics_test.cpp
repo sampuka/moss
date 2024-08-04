@@ -10,10 +10,11 @@ void graphics_test()
     //uefi_conout_outputstring_uint_dec(sizeof(pixel_t));
     //uefi_conout_outputstring(u"\r\n");
 
-    size_t x = 0;
-    size_t y = 0;
+    int x = 0;
+    int y = 0;
     int xd = 1;
     int yd = 1;
+    
     while (true)
     {
         screen_clear_frame();

@@ -1,5 +1,5 @@
-#include <efi/efi.h>
-#include <efi/efilib.h>
+#include <efi.h>
+#include <efilib.h>
 
 #include "uefi/uefi_con.h"
 #include "uefi/uefi_gop.h"

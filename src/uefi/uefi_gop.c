@@ -72,15 +72,13 @@ int uefi_gop_init()
         {
             case EFI_SUCCESS:
             {
-                /*
-                uefi_conout_outputstring(u"    Mode ");
-                uefi_conout_outputstring_uint_dec(mode+1);
-                uefi_conout_outputstring(u": ");
-                uefi_conout_outputstring_uint_dec(GOP_mode->info->HorizontalResolution);
-                uefi_conout_outputstring(u"x");
-                uefi_conout_outputstring_uint_dec(GOP_mode->info->VerticalResolution);
-                uefi_conout_outputstring(u"\r\n");
-                */
+                // uefi_conout_outputstring(u"    Mode ");
+                // uefi_conout_outputstring_uint_dec(mode+1);
+                // uefi_conout_outputstring(u": ");
+                // uefi_conout_outputstring_uint_dec(GOP_mode->info->HorizontalResolution);
+                // uefi_conout_outputstring(u"x");
+                // uefi_conout_outputstring_uint_dec(GOP_mode->info->VerticalResolution);
+                // uefi_conout_outputstring(u"\r\n");
                 break;
             }
 

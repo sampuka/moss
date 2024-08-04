@@ -52,10 +52,10 @@ VideoMode screen_get_mode()
     return active_mode;
 }
 
-void screen_video_modes(VideoMode** modes, size_t* count)
+VideoModeSet screen_video_modes()
 {
-    *modes = video_modes;
-    *count = GOP_mode_count;
+    VideoModeSet set = {.video_modes = video_modes, .video_mode_size = GOP_mode_count, .active_mode = GOP_active_mode};
+    return set;
 }
 
 int screen_set_resolution(size_t desired_hoz_res, size_t desired_ver_res)

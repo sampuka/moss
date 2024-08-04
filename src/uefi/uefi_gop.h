@@ -5,8 +5,8 @@
 extern "C" {
 #endif
 
-#include <efi/efi.h>
-#include <efi/efilib.h>
+#include <efi.h>
+#include <efilib.h>
 
 #define GOP_MAX_MODES_SUPPORTED 100
 
